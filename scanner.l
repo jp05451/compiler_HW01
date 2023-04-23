@@ -12,6 +12,13 @@ char buf[MAX_LINE_LENG];
 
 digit [0-9]
 digits {digit}+
+numerical {digits}+("."{digits}+)?
+
+alphaBat [a-zA-Z]
+ID {alphaBat}+({digits}|{alphaBat})*
+
+%x STRING
+
 
 %%
         /*Delimiters*/
@@ -47,9 +54,77 @@ digits {digit}+
 "not"   {token('not')}
 
 
-ID      {token("ID");}
+        /*KeyWord*/
+array           {token("ARRAY");}
+begin           {token("BEGIN");}
+bool            {token("BOOL");}
+char            {token("CHAR");}
+const           {token("CONST");}
+decreasing      {token("DECREASING");}
+default         {token("DEFAULT");}
+do              {token("DO");}
+else            {token("ELSE");}
+end             {token("END");}
+exit            {token("EXIT");}
+false           {token("FALSE");}
+for             {token("FOR");}
+function        {token("FUNCTION");}
+get             {token("GET");}
+if              {token("IF");}
+int             {token("INT");}
+loop            {token("LOOP");}
+of              {token("OF");}
+put             {token("PUT");}
+procedure       {token("PROCEDURE");}
+real            {token("REAL");}
+result          {token("RESULT");}
+return          {token("RETURN");}
+skip            {token("SKIP");}
+string          {token("STRING");}
+then            {token("THEN");}
+true            {token("TRUE");}
+var             {token("VAR");}
+when            {token("WHEN");}
 
-{}
+
+{ID}            {token("ID");}
+{numerical}     {
+                        float number;
+                        sscanf(yytext,"%f",&number);
+                        tokenInteger("NUMBER",number);
+                }
+
+\"              {
+                        BEGIN(STRING);
+                }
+
+<STRING> "\""   {
+                        LIST;
+                        tokenString("STR",buf)
+                        BEGIN(INITIAL);
+                }
+
+
+<STRING>\n      {
+                        printf("%s",buf);
+                        linenum++;
+                } 
+
+<STRING>""      {
+                        strcat(buf,"\"");
+                }
+
+
+<STRING>.       {
+                        LIST;
+                }
+
+        /*
+        "aasdfasdf\n
+        asdfasdf"
+        
+        */
+
 \n      {
         LIST;
         printf("%d: %s", linenum++, buf);
