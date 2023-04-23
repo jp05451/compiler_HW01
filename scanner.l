@@ -37,21 +37,21 @@ ID {alphaBat}+({digits}|{alphaBat})*
 "}"     {token('}');}
 
         /* Arithmetic, Relational, and Logical Operators */
-"+"     {token('+')}
-"-"     {token('-')}
-"*"     {token('*')}
-"/"     {token('/')}
-"mod"   {token('mod')}
-":="    {token(':=')}
-"<"     {token('<')}
-"<="    {token('<=')}
-">"     {token('>')}
-">="    {token('>=')}
-"="     {token('=')}
-"not="  {token('not=')}
-"and"   {token('and')}
-"or"    {token('or')}
-"not"   {token('not')}
+"+"     {token('+');}
+"-"     {token('-');}
+"*"     {token('*');}
+"/"     {token('/');}
+"mod"   {token('mod');}
+":="    {token(':=');}
+"<"     {token('<');}
+"<="    {token('<=');}
+">"     {token('>');}
+">="    {token('>=');}
+"="     {token('=');}
+"not="  {token('not=');}
+"and"   {token('and');}
+"or"    {token('or');}
+"not"   {token('not');}
 
 
         /*KeyWord*/
@@ -88,42 +88,40 @@ when            {token("WHEN");}
 
 
 {ID}            {token("ID");}
+
 {numerical}     {
-                        float number;
-                        sscanf(yytext,"%f",&number);
-                        tokenInteger("NUMBER",number);
+                float number;
+                sscanf(yytext,"%f",&number);
+                tokenInteger("NUMBER",number);
                 }
 
-\"              {
+        /*      STRING  */
+
+"\""            {
                         BEGIN(STRING);
                 }
+<STRING>"\n"    {
+                        tokenString("STR",buf)
+                        linenum++;
+                } 
+<STRING>.       {
+                        LIST;
+                }
 
-<STRING> "\""   {
+<STRING>"\"\""  {
+                        strcat(buf,"\"");
+                }
+<STRING> "\"" {
                         LIST;
                         tokenString("STR",buf)
                         BEGIN(INITIAL);
                 }
 
 
-<STRING>\n      {
-                        printf("%s",buf);
-                        linenum++;
-                } 
-
-<STRING>""      {
-                        strcat(buf,"\"");
-                }
 
 
-<STRING>.       {
-                        LIST;
-                }
 
-        /*
-        "aasdfasdf\n
-        asdfasdf"
-        
-        */
+
 
 \n      {
         LIST;
@@ -132,7 +130,6 @@ when            {token("WHEN");}
         }
 
 [ \t]*  {LIST;}
-    /*hjkhkh*/
 .       {
         LIST;
         printf("%d:%s\n", linenum+1, buf);
