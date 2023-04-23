@@ -101,21 +101,25 @@ when            {token("WHEN");}
                         BEGIN(STRING);
                 }
 <STRING>"\n"    {
-                        tokenString("STR",buf);
-                        linenum++;
+                LIST;
+                printf("%d: %s", linenum++, buf);
+                buf[0] = '\0';
                 } 
-<STRING>.       {
-                        LIST;
+
+<STRING>.       {LIST;}
+
+<STRING>"\"\""  {strcat(buf,"\"");}
+
+<STRING> "\""   ;{
+                LIST;
+                tokenString("STR",buf);
+                BEGIN(INITIAL);
                 }
 
-<STRING>"\"\""  {
-                        strcat(buf,"\"");
-                }
-<STRING> "\""   ;{
-                        LIST;
-                        tokenString("STR",buf);
-                        BEGIN(INITIAL);
-                }
+        /*      COMMENT*/
+"%"     {}
+
+
 
 
 \n      {
