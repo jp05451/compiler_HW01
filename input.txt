@@ -1,2 +1,0 @@
-array begin bool char const decreasing default do else end exit false for function get if int
-loop of put procedure real result return skip string then true var when

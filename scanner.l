@@ -22,16 +22,16 @@ ID {alphaBat}+({digits}|{alphaBat})*
 
 %%
         /*Delimiters*/
-"."     {token('.')}
-","     {token(',')}
-":"     {token(':')}
-";"     {token(';')}
+"."     {token('.');}
+","     {token(',');}
+":"     {token(':');}
+";"     {token(';');}
 
 "("     {token('(');}
 ")"     {token(')');}
 
-"["     {token('[')}
-"]"     {token(']')}
+"["     {token('[');}
+"]"     {token(']');}
 
 "{"     {token('{');}
 "}"     {token('}');}
@@ -101,7 +101,7 @@ when            {token("WHEN");}
                         BEGIN(STRING);
                 }
 <STRING>"\n"    {
-                        tokenString("STR",buf)
+                        tokenString("STR",buf);
                         linenum++;
                 } 
 <STRING>.       {
@@ -111,16 +111,11 @@ when            {token("WHEN");}
 <STRING>"\"\""  {
                         strcat(buf,"\"");
                 }
-<STRING> "\"" {
+<STRING> "\""   ;{
                         LIST;
-                        tokenString("STR",buf)
+                        tokenString("STR",buf);
                         BEGIN(INITIAL);
                 }
-
-
-
-
-
 
 
 \n      {

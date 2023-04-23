@@ -865,22 +865,22 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 26 "scanner.l"
-{token('.')}
+{token('.');}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 27 "scanner.l"
-{token(',')}
+{token(',');}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 28 "scanner.l"
-{token(':')}
+{token(':');}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 29 "scanner.l"
-{token(';')}
+{token(';');}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
@@ -895,12 +895,12 @@ YY_RULE_SETUP
 case 7:
 YY_RULE_SETUP
 #line 34 "scanner.l"
-{token('[')}
+{token('[');}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 35 "scanner.l"
-{token(']')}
+{token(']');}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
@@ -1166,7 +1166,7 @@ case 59:
 YY_RULE_SETUP
 #line 104 "scanner.l"
 {
-                        tokenString("STR",buf)
+                        tokenString("STR",buf);
                         linenum++;
                 } 
 	YY_BREAK
@@ -1184,15 +1184,15 @@ YY_RULE_SETUP
                         strcat(buf,"\"");
                 }
 	YY_BREAK
-"\"" {
+"\""   ;{
                         LIST;
-                        tokenString("STR",buf)
+                        tokenString("STR",buf);
                         BEGIN(INITIAL);
                 }
 case 62:
 /* rule 62 can match eol */
 YY_RULE_SETUP
-#line 127 "scanner.l"
+#line 122 "scanner.l"
 {
         LIST;
         printf("%d: %s", linenum++, buf);
@@ -1201,12 +1201,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 133 "scanner.l"
+#line 128 "scanner.l"
 {LIST;}
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 134 "scanner.l"
+#line 129 "scanner.l"
 {
         LIST;
         printf("%d:%s\n", linenum+1, buf);
@@ -1216,7 +1216,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 140 "scanner.l"
+#line 135 "scanner.l"
 ECHO;
 	YY_BREAK
 #line 1223 "lex.yy.c"
@@ -2225,5 +2225,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 140 "scanner.l"
+#line 135 "scanner.l"
 
