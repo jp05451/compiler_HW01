@@ -21,7 +21,7 @@ ID {alphaBat}+({digits}|{alphaBat})*
 
 
 %%
-        /*Delimiters*/
+        /*==========Delimiters==========*/
 "."     {token('.');}
 ","     {token(',');}
 ":"     {token(':');}
@@ -36,7 +36,7 @@ ID {alphaBat}+({digits}|{alphaBat})*
 "{"     {token('{');}
 "}"     {token('}');}
 
-        /* Arithmetic, Relational, and Logical Operators */
+        /*==========Arithmetic, Relational, and Logical Operators==========*/
 "+"     {token('+');}
 "-"     {token('-');}
 "*"     {token('*');}
@@ -54,7 +54,7 @@ ID {alphaBat}+({digits}|{alphaBat})*
 "not"   {token('not');}
 
 
-        /*KeyWord*/
+        /*==========KeyWord==========*/
 array           {token("ARRAY");}
 begin           {token("BEGIN");}
 bool            {token("BOOL");}
@@ -95,40 +95,61 @@ when            {token("WHEN");}
                 tokenInteger("NUMBER",number);
                 }
 
-        /*      STRING  */
+        /*==========STRING==========*/
 
-"\""            {
+\"              {
+                        LIST;
                         BEGIN(STRING);
                 }
-<STRING>"\n"    {
+<STRING>\n      {
                 LIST;
                 printf("%d: %s", linenum++, buf);
                 buf[0] = '\0';
                 } 
 
-<STRING>.       {LIST;}
 
-<STRING>"\"\""  {strcat(buf,"\"");}
 
-<STRING> "\""   ;{
+<STRING>\"\"    {strcat(buf,"\"");}
+
+<STRING>\"      {
                 LIST;
-                tokenString("STR",buf);
+                tokenString("STR",yytext);
                 BEGIN(INITIAL);
                 }
 
-        /*      COMMENT*/
-"%"     {}
+<STRING>[^\"\n] {
+                yymore();
+                }
+
+
+        /*==========COMMENT==========*/
+"%"     {
+        printf("hello %");
+        char c = getchar();
+        char tmp_str[2];
+        while (c != '\n') 
+        {
+                tmp_str[0] = c;
+                tmp_str[1] = '\0';
+                strcat(buf, tmp_str);
+                c = getchar();
+        }
+        printf("%d: %s", linenum++, buf);
+        buf[0] = '\0';
+        }
 
 
 
 
+        /*==========next line==========*/
 \n      {
         LIST;
         printf("%d: %s", linenum++, buf);
         buf[0] = '\0';
         }
-
+        /*==========white space==========*/
 [ \t]*  {LIST;}
+
 .       {
         LIST;
         printf("%d:%s\n", linenum+1, buf);
@@ -136,3 +157,22 @@ when            {token("WHEN");}
         exit(-1);
         }
 %%
+
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        fprintf(stderr, "Usage: %s filename\n", argv[0]);
+        return 1;
+    }
+
+    FILE *file = fopen(argv[1], "r");
+    if (!file) {
+        perror("Error opening file");
+        return 1;
+    }
+
+    yyin = file; 
+    yylex(); 
+
+    fclose(file); 
+    return 0;
+}
