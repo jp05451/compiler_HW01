@@ -1191,8 +1191,8 @@ case 61:
 YY_RULE_SETUP
 #line 115 "scanner.l"
 {
-                LIST;
-                tokenString('STR',yytext);
+                tokenString("STR",yytext);
+                // tokenString("STR","yytext");
                 BEGIN(INITIAL);
                 }
 	YY_BREAK

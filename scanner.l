@@ -112,8 +112,8 @@ when            {token("WHEN");}
 <STRING>\"\"    {strcat(buf,"\"");}
 
 <STRING>\"      {
-                LIST;
                 tokenString("STR",yytext);
+                // tokenString("STR","yytext");
                 BEGIN(INITIAL);
                 }
 
