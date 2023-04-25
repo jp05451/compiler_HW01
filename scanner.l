@@ -18,7 +18,8 @@ alphaBat [a-zA-Z]
 ID {alphaBat}+({digits}|{alphaBat})*
 
 %x STRING
-
+%x COMMENT
+%x COMMENT_LINES
 
 %%
         /*==========Delimiters==========*/
@@ -112,7 +113,7 @@ when            {token("WHEN");}
 <STRING>\"\"    {strcat(buf,"\"");}
 
 <STRING>\"      {
-                tokenString("STR",yytext);
+                tokenString(string,yytext);
                 // tokenString("STR","yytext");
                 BEGIN(INITIAL);
                 }
@@ -123,21 +124,35 @@ when            {token("WHEN");}
 
 
         /*==========COMMENT==========*/
-"%"     {
-        printf("hello %");
-        char c = getchar();
-        char tmp_str[2];
-        while (c != '\n') 
-        {
-                tmp_str[0] = c;
-                tmp_str[1] = '\0';
-                strcat(buf, tmp_str);
-                c = getchar();
-        }
-        printf("%d: %s", linenum++, buf);
-        buf[0] = '\0';
+%               {
+                LIST;
+                BEGIN(COMMENT);
+                }
+<COMMENT>\n     {
+                LIST;
+                printf("%d: %s", linenum++, buf);
+                buf[0] = '\0';
+                BEGIN(INITIAL);
+                }
+<COMMENT>.      {LIST;}
+
+        /*/*==========COMMENT_LINE/*==========*/
+"{%"    {
+        LIST;
+        BEGIN(COMMENT_LINES);
         }
 
+<COMMENT_LINES>"%}"        {
+                        LIST;
+                        BEGIN(INITIAL);
+                        }
+
+<COMMENT_LINES>\n       {
+                        LIST;
+                        printf("%d: %s", linenum++, buf);
+                        buf[0] = '\0';
+                        }    
+<COMMENT_LINES>.        {LIST;}
 
 
 
