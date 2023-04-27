@@ -1,4 +1,7 @@
 %{
+#include<stdio.h>
+#include"symbolTable.h"
+
 #define LIST     strcat(buf,yytext)
 #define token(t) {LIST; printf("<%s>\n",#t);}
 #define tokenInteger(t,i) {LIST; printf("<%s:%d>\n",#t,i);}
@@ -8,6 +11,7 @@
 
 int linenum = 1;
 char buf[MAX_LINE_LENG];
+symbolTable s_table;
 %}
 
 digit [0-9]
@@ -88,7 +92,10 @@ var             {token("VAR");}
 when            {token("WHEN");}
 
 
-{ID}            {token("ID");}
+{ID}            {
+                token("ID");
+                s_table.insert(yytext);
+                }
 
 {numerical}     {
                 float number;
@@ -189,5 +196,6 @@ int main(int argc, char *argv[]) {
     yylex(); 
 
     fclose(file); 
+    s_table.dump();
     return 0;
 }
