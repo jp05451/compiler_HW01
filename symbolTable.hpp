@@ -27,7 +27,8 @@ public:
 
 private:
     // vector<vector<string>> table;
-    unordered_map<int, vector<string>> table;
+    // unordered_map<int, vector<string>> table;
+    unordered_map<int, set<string>> table;
 };
 
 void symbolTable::creat()
@@ -37,8 +38,9 @@ void symbolTable::creat()
 
 int symbolTable::lookup(const string &symbol)
 {
-    vector<string>::iterator iter = find(table[ID].begin(), table[ID].end(), symbol);
-    if(iter==table[ID].end())
+    // vector<string>::iterator iter = find(table[ID].begin(), table[ID].end(), symbol);
+    set<string>::iterator iter = find(table[ID].begin(), table[ID].end(), symbol);
+    if (iter == table[ID].end())
         return -1;
 
     return distance(table[ID].begin(), iter);
@@ -46,11 +48,8 @@ int symbolTable::lookup(const string &symbol)
 
 void symbolTable::insert(const string &symbol)
 {
-    if (lookup(symbol) == -1)
-    {
-        table[ID].push_back(symbol);
-        cout << symbol << " is inserted" << endl;
-    }
+    table[ID].insert(symbol);
+    cout << symbol << " is inserted" << endl;
 }
 
 void symbolTable::dump()
@@ -59,8 +58,6 @@ void symbolTable::dump()
     // cout << "ID" << endl;
     for (auto &a : table[ID])
     {
-        if(a == "ID")
-            printf("id bad\n");
         cout << a << endl;
     }
 }
