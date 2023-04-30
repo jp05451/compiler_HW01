@@ -583,7 +583,7 @@ char *yytext;
 #line 1 "scanner.l"
 #line 2 "scanner.l"
 #include<stdio.h>
-#include"symbolTable.h"
+#include"symbolTable.hpp"
 
 #define LIST     strcat(buf,yytext)
 #define token(t) {LIST; printf("<%s>\n",#t);}
@@ -2329,7 +2329,7 @@ int main(int argc, char *argv[]) {
         perror("Error opening file");
         return 1;
     }
-
+        s_table.creat();        
     yyin = file; 
     yylex(); 
 
