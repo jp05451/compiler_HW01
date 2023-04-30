@@ -17,42 +17,50 @@ class symbolTable
 public:
     symbolTable()
     {
-        table.resize(1);
+        // table.resize(1);
     }
     ~symbolTable() {}
     void creat();
-    int lookup(string &symbol);
+    int lookup(const string &symbol);
     void insert(const string &symbol);
     void dump();
 
 private:
-    vector<vector<string>> table;
-    
+    // vector<vector<string>> table;
+    unordered_map<int, vector<string>> table;
 };
 
 void symbolTable::creat()
 {
-    table.resize(1);
+    // table.resize(1);
 }
 
-int symbolTable::lookup(string &symbol)
+int symbolTable::lookup(const string &symbol)
 {
     vector<string>::iterator iter = find(table[ID].begin(), table[ID].end(), symbol);
+    if(iter==table[ID].end())
+        return -1;
+
     return distance(table[ID].begin(), iter);
 }
 
 void symbolTable::insert(const string &symbol)
 {
-    table[ID].push_back(symbol);
-    cout << symbol << " is inserted" << endl;
+    if (lookup(symbol) == -1)
+    {
+        table[ID].push_back(symbol);
+        cout << symbol << " is inserted" << endl;
+    }
 }
 
 void symbolTable::dump()
 {
     cout << "Symbol Table:" << endl;
-    cout << "ID" << endl;
+    // cout << "ID" << endl;
     for (auto &a : table[ID])
     {
+        if(a == "ID")
+            printf("id bad\n");
         cout << a << endl;
     }
 }

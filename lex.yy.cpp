@@ -1166,12 +1166,13 @@ YY_RULE_SETUP
 #line 96 "scanner.l"
 {
                 token("ID");
+                printf("id %s\n",yytext);
                 s_table.insert(yytext);
                 }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 101 "scanner.l"
+#line 102 "scanner.l"
 {
                 float number;
                 sscanf(yytext,"%f",&number);
@@ -1181,7 +1182,7 @@ YY_RULE_SETUP
 /*==========STRING==========*/
 case 58:
 YY_RULE_SETUP
-#line 109 "scanner.l"
+#line 110 "scanner.l"
 {
                         LIST;
                         BEGIN(STRING);
@@ -1190,7 +1191,7 @@ YY_RULE_SETUP
 case 59:
 /* rule 59 can match eol */
 YY_RULE_SETUP
-#line 113 "scanner.l"
+#line 114 "scanner.l"
 {
                 LIST;
                 printf("%d: %s", linenum++, buf);
@@ -1199,12 +1200,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 121 "scanner.l"
+#line 122 "scanner.l"
 {strcat(buf,"\"");}
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 123 "scanner.l"
+#line 124 "scanner.l"
 {
                 tokenString(string,yytext);
                 // tokenString("STR","yytext");
@@ -1213,7 +1214,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 129 "scanner.l"
+#line 130 "scanner.l"
 {
                 yymore();
                 }
@@ -1221,7 +1222,7 @@ YY_RULE_SETUP
 /*==========COMMENT==========*/
 case 63:
 YY_RULE_SETUP
-#line 135 "scanner.l"
+#line 136 "scanner.l"
 {
                 LIST;
                 BEGIN(COMMENT);
@@ -1230,7 +1231,7 @@ YY_RULE_SETUP
 case 64:
 /* rule 64 can match eol */
 YY_RULE_SETUP
-#line 139 "scanner.l"
+#line 140 "scanner.l"
 {
                 LIST;
                 printf("%d: %s", linenum++, buf);
@@ -1240,13 +1241,13 @@ YY_RULE_SETUP
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 145 "scanner.l"
+#line 146 "scanner.l"
 {LIST;}
 	YY_BREAK
 /*/*==========COMMENT_LINE/*==========*/
 case 66:
 YY_RULE_SETUP
-#line 148 "scanner.l"
+#line 149 "scanner.l"
 {
         LIST;
         BEGIN(COMMENT_LINES);
@@ -1254,7 +1255,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 153 "scanner.l"
+#line 154 "scanner.l"
 {
                         LIST;
                         BEGIN(INITIAL);
@@ -1263,7 +1264,7 @@ YY_RULE_SETUP
 case 68:
 /* rule 68 can match eol */
 YY_RULE_SETUP
-#line 158 "scanner.l"
+#line 159 "scanner.l"
 {
                         LIST;
                         printf("%d: %s", linenum++, buf);
@@ -1272,14 +1273,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 163 "scanner.l"
+#line 164 "scanner.l"
 {LIST;}
 	YY_BREAK
 /*==========next line==========*/
 case 70:
 /* rule 70 can match eol */
 YY_RULE_SETUP
-#line 168 "scanner.l"
+#line 169 "scanner.l"
 {
         LIST;
         printf("%d: %s", linenum++, buf);
@@ -1289,12 +1290,12 @@ YY_RULE_SETUP
 /*==========white space==========*/
 case 71:
 YY_RULE_SETUP
-#line 174 "scanner.l"
+#line 175 "scanner.l"
 {LIST;}
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 176 "scanner.l"
+#line 177 "scanner.l"
 {
         LIST;
         printf("%d:%s\n", linenum+1, buf);
@@ -1304,10 +1305,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 182 "scanner.l"
+#line 183 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1311 "lex.yy.c"
+#line 1312 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(STRING):
 case YY_STATE_EOF(COMMENT):
@@ -2315,7 +2316,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 182 "scanner.l"
+#line 183 "scanner.l"
 
 
 int main(int argc, char *argv[]) {

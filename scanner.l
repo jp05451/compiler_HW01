@@ -94,6 +94,7 @@ when            {token("WHEN");}
 
 {ID}            {
                 token("ID");
+                printf("id %s\n",yytext);
                 s_table.insert(yytext);
                 }
 
