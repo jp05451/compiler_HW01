@@ -107,7 +107,8 @@ when            {token("WHEN");}
         /*==========STRING==========*/
 
 \"              {
-                        LIST;
+                        // LIST;
+                        // printf("begin string\n");
                         BEGIN(STRING);
                 }
 <STRING>\n      {
@@ -117,16 +118,27 @@ when            {token("WHEN");}
                 } 
 
 
+<STRING>\"\"    {
+                char str[yyleng];
+                for(int i=0;i<yyleng-1;i++)
+                {
+                        str[i]=yytext[i];
+                }
+                str[yyleng]='\0';
+                yytext=str;
+                printf("%s\n",yytext);
+                
+                yymore();
+                }
 
-<STRING>\"\"    {strcat(buf,"\"");}
 
 <STRING>\"      {
-                tokenString(string,yytext);
-                // tokenString("STR","yytext");
+                tokenString(STR,yytext);
                 BEGIN(INITIAL);
                 }
 
-<STRING>[^\"\n] {
+<STRING>[^\"\n]* {
+                printf("%sTEST\n",yytext);
                 yymore();
                 }
 
